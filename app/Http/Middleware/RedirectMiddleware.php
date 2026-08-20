@@ -20,6 +20,15 @@ class RedirectMiddleware
             $path = '/';
         }
 
+        $canonical = config('app.canonical_host', 'vanniyanrestuarant.vercel.app');
+        $allowed = ['vanniyanrestuarant.vercel.app', $canonical];
+
+        $isLocal = in_array($request->getHost(), ['localhost', '127.0.0.1', '::1'], true);
+
+        if (! $isLocal && ! in_array($request->getHost(), $allowed, true)) {
+            return redirect()->away('https://' . $canonical . '/' . $path, 301);
+        }
+
         $redirect = \App\Models\Redirect::where('old_path', $path)
                         ->orWhere('old_path', '/' . $path)
                         ->where('is_active', true)
