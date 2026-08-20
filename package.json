@@ -6,6 +6,9 @@
         "build": "vite build",
         "dev": "vite"
     },
+    "dependencies": {
+        "@vercel/analytics": "^1.4.1"
+    },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "autoprefixer": "^10.5.4",
