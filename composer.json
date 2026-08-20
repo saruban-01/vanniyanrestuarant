@@ -33,6 +33,10 @@
         }
     },
     "scripts": {
+        "vercel": [
+            "mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/logs",
+            "@php artisan package:discover --ansi"
+        ],
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
