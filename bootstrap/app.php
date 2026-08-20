@@ -36,10 +36,4 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
-
-        $exceptions->report(function (Throwable $e) {
-            $fh = fopen('php://stderr', 'w');
-            fwrite($fh, 'EXCEPTION: '.get_class($e).': '.$e->getMessage().PHP_EOL.$e->getTraceAsString());
-            fclose($fh);
-        });
     })->create();
