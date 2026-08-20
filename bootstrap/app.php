@@ -36,6 +36,8 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         $exceptions->report(function (Throwable $e) {
-            fwrite(STDERR, 'EXCEPTION: '.get_class($e).': '.$e->getMessage()."\n".$e->getTraceAsString()."\n");
+            $fh = fopen('php://stderr', 'w');
+            fwrite($fh, 'EXCEPTION: '.get_class($e).': '.$e->getMessage()."\n".$e->getTraceAsString()."\n");
+            fclose($fh);
         });
     })->create();
