@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/index.php",
+            "use": "vercel-php@0.6.0"
+        },
+        {
+            "src": "/public/**",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(css|js|images|build|vendor)/(.+)",
+            "dest": "/public/$1/$2"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "APP_URL": "https://www.vanniyanrestaurant.com",
+        "APP_NAME": "Vanniyan Restaurant",
+        "ADMIN_PATH": "vanniyan-control",
+        "CACHE_DRIVER": "array",
+        "SESSION_DRIVER": "database",
+        "QUEUE_CONNECTION": "sync",
+        "DB_CONNECTION": "sqlite",
+        "GOOGLE_PLACE_ID": "ChIJ631GQQCV_joRnLrzpEuXyYo",
+        "GOOGLE_REVIEWS_URL": "https://www.google.com/maps/search/?api=1&query=Vanniyan+Restaurant&query_place_id=ChIJ631GQQCV_joRnLrzpEuXyYo",
+        "GOOGLE_WRITE_REVIEW_URL": "https://search.google.com/local/writereview?placeid=ChIJ631GQQCV_joRnLrzpEuXyYo",
+        "GOOGLE_REVIEWS_CACHE_MINUTES": "1440"
+    }
+}
