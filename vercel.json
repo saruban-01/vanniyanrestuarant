@@ -16,6 +16,10 @@
             "dest": "/public/$1/$2"
         },
         {
+            "src": "/googledd463573ed98d07f.html",
+            "dest": "/public/googledd463573ed98d07f.html"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
