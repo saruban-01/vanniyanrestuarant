@@ -1,28 +1,27 @@
 ---
 deployment:
   tasks:
-    # Vanniyan PHP 8.3 cPanel deployment
-    # Repository is kept outside public_html.
-    # Only the contents of /public are exposed to the web.
+    # Vanniyan Restaurant — Laravel deployment via cPanel Git Version Control
+    # cPanel clones the repo to /home/lightupl/repositories/vanniyanrestuarant
+    # and runs these tasks on every deploy/pull.
 
-    - export APPPATH=/home/lightupl/repositories/vanniyanrestuarant
+    - export REPOPATH=/home/lightupl/repositories/vanniyanrestuarant
     - export DEPLOYPATH=/home/lightupl/public_html
-    - export PRIVATEPATH=/home/lightupl/vanniyan-app
+    - export PHP=/usr/local/bin/php
+    - export COMPOSER=/usr/local/bin/composer
 
-    # Create private application directories.
-    - /bin/mkdir -p $PRIVATEPATH
+    # 1. Install PHP dependencies.
+    #    vendor/ is gitignored, so it MUST be built on the server.
+    - cd $REPOPATH && $COMPOSER install --no-dev --prefer-dist --optimize-autoloader || (cd $REPOPATH && composer install --no-dev --prefer-dist --optimize-autoloader)
 
-    # Copy private application code outside public_html.
-    - /bin/cp -R $APPPATH/app $PRIVATEPATH/
-    - /bin/cp -R $APPPATH/admin $PRIVATEPATH/
-    - /bin/cp -R $APPPATH/config $PRIVATEPATH/ 2>/dev/null || true
-    - /bin/cp -R $APPPATH/database $PRIVATEPATH/ 2>/dev/null || true
-    - /bin/cp -R $APPPATH/storage $PRIVATEPATH/ 2>/dev/null || true
+    # 2. Production optimizations (safe even if .env is not present yet).
+    - cd $REPOPATH && $PHP artisan config:cache || true
+    - cd $REPOPATH && $PHP artisan route:cache || true
 
-    # Deploy public web files.
-    - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R $APPPATH/public/* $DEPLOYPATH/
-    - /bin/cp -R $APPPATH/public/.[!.]* $DEPLOYPATH/ 2>/dev/null || true
+    # 3. Point the web root at Laravel's public/ folder.
+    #    The rest of the repo stays OUTSIDE public_html (not web-accessible).
+    - /bin/rm -rf $DEPLOYPATH
+    - /bin/ln -s $REPOPATH/public $DEPLOYPATH
 
-    # Do NOT overwrite production environment files with Git content.
-    - /bin/rm -f $DEPLOYPATH/.env
+    # 4. Link storage (public/storage -> storage/app/public).
+    - cd $REPOPATH && $PHP artisan storage:link || true
