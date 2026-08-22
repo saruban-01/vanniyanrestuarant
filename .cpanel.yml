@@ -1,5 +1,28 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/lightupl/public_html/
-    - /bin/cp -R * $DEPLOYPATH
+    # Vanniyan PHP 8.3 cPanel deployment
+    # Repository is kept outside public_html.
+    # Only the contents of /public are exposed to the web.
+
+    - export APPPATH=/home/lightupl/repositories/vanniyanrestuarant
+    - export DEPLOYPATH=/home/lightupl/public_html
+    - export PRIVATEPATH=/home/lightupl/vanniyan-app
+
+    # Create private application directories.
+    - /bin/mkdir -p $PRIVATEPATH
+
+    # Copy private application code outside public_html.
+    - /bin/cp -R $APPPATH/app $PRIVATEPATH/
+    - /bin/cp -R $APPPATH/admin $PRIVATEPATH/
+    - /bin/cp -R $APPPATH/config $PRIVATEPATH/ 2>/dev/null || true
+    - /bin/cp -R $APPPATH/database $PRIVATEPATH/ 2>/dev/null || true
+    - /bin/cp -R $APPPATH/storage $PRIVATEPATH/ 2>/dev/null || true
+
+    # Deploy public web files.
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R $APPPATH/public/* $DEPLOYPATH/
+    - /bin/cp -R $APPPATH/public/.[!.]* $DEPLOYPATH/ 2>/dev/null || true
+
+    # Do NOT overwrite production environment files with Git content.
+    - /bin/rm -f $DEPLOYPATH/.env
