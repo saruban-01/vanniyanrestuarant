@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CmsPageVersion extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'content' => 'array',

@@ -134,8 +134,12 @@ class CheckoutFlow extends Component
             $this->cart = [];
             $this->displayCart = [];
 
-            // Redirect to confirmation
-            return redirect()->route('takeaway.confirmation', ['reference' => $order->reference]);
+            // Redirect to confirmation (include the access token so the
+            // unauthenticated confirmation page can verify ownership of the link)
+            return redirect()->route('takeaway.confirmation', [
+                'reference' => $order->reference,
+                'token' => $order->access_token,
+            ]);
             
         } catch (\Exception $e) {
             $this->isProcessing = false;

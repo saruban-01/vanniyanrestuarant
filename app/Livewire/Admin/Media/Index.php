@@ -21,14 +21,14 @@ class Index extends Component
     public function updatedUpload()
     {
         $this->validate([
-            'upload' => 'image|max:5120', // 5MB Max
+            'upload' => 'required|mimes:jpeg,png,webp,gif|max:5120', // 5MB Max, raster only (no SVG)
         ]);
     }
 
     public function saveMedia(MediaService $service)
     {
         $this->validate([
-            'upload' => 'required|image|max:5120',
+            'upload' => 'required|mimes:jpeg,png,webp,gif|max:5120',
             'alt_text' => 'nullable|string|max:255',
         ]);
 

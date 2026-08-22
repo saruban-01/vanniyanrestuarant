@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(at: '*');
+        // Only trust the real upstream proxy IPs. Prevents client-supplied
+        // X-Forwarded-For spoofing (which would bypass login/contact throttles).
+        $middleware->trustProxies(at: explode(',', env('TRUSTED_PROXIES', '127.0.0.1')));
 
         $middleware->append(\App\Http\Middleware\SecureHeadersMiddleware::class);
         $middleware->append(\App\Http\Middleware\RedirectMiddleware::class);

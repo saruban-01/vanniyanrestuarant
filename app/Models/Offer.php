@@ -10,7 +10,7 @@ class Offer extends Model
 {
     use HasFactory, SoftDeletes, \App\Traits\Seoable;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected static function booted()
     {

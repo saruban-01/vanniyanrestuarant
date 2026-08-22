@@ -49,6 +49,7 @@ class TakeawayOrderService
             // Create Order
             $order = TakeawayOrder::create([
                 'reference' => 'VAN-TA-' . strtoupper(Str::random(5)) . date('y'),
+                'access_token' => Str::random(40),
                 'status' => 'received',
                 'customer_name' => $customerDetails['name'],
                 'customer_phone' => $customerDetails['phone'],

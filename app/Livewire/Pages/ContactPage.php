@@ -106,7 +106,7 @@ class ContactPage extends Component
             'nextOpening' => $nextOpening,
             'weeklySchedule' => $weeklySchedule,
             'specialToday' => $specialToday,
-            'schemaJson' => json_encode($schema),
+            'schemaJson' => json_encode($schema, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES),
         ])->layout('components.layouts.app', [
             'title' => 'Contact Vanniyan Restaurant | Location & Opening Hours | Kilinochchi',
             'meta_description' => 'Find Vanniyan Restaurant in Kilinochchi, Sri Lanka. View our location, opening hours, contact details, takeaway information and table reservations.',

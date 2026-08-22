@@ -11,7 +11,7 @@ class AdminUser extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected $hidden = [
         'password',

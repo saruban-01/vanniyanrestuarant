@@ -9,7 +9,7 @@ class AuditLog extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected static function booted(): void
     {

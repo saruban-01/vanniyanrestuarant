@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CmsPage extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'is_published' => 'boolean',

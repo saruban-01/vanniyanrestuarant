@@ -151,10 +151,28 @@ Route::get('/takeaway', function () {
     return redirect()->route('menu', ['mode' => 'takeaway']);
 })->name('takeaway');
 
-Route::get('/takeaway/confirmation/{reference}', function ($reference) {
+Route::get('/takeaway/confirmation/{reference}', function (\Illuminate\Http\Request $request, $reference) {
     $order = \App\Models\TakeawayOrder::where('reference', $reference)->firstOrFail();
+
+    // Orders created before access tokens existed have a null token and are
+    // allowed through for backwards compatibility. New orders require the
+    // unguessable token so the unauthenticated confirmation page does not
+    // leak customer PII (name/phone/email) to anyone who guesses a reference.
+    if ($order->access_token !== null && $request->query('token') !== $order->access_token) {
+        abort(403, 'Invalid or missing order access token.');
+    }
+
     return view('pages.order-confirmation', compact('order'));
 })->name('takeaway.confirmation');
+
+// Lightweight health check for uptime monitoring (no sensitive data).
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'app' => config('app.name'),
+        'time' => now()->toIso8601String(),
+    ]);
+});
 
 // Fallback Route for QR Redirects
 Route::fallback(function (\Illuminate\Http\Request $request) {

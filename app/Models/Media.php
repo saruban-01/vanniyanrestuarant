@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function getUrlAttribute()
     {
