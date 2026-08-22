@@ -10,7 +10,7 @@
     <!-- Image -->
     <div class="relative h-48 md:h-56 overflow-hidden bg-gray-100">
         <img 
-            src="{{ $item->image_url ?: 'https://via.placeholder.com/800x600?text=Vanniyan' }}" 
+            src="{{ $item->image_url ? str_replace(['w=800', 'q=80'], ['w=400', 'q=70'], $item->image_url) : asset('images/placeholder.svg') }}" 
             alt="{{ $item->name }}" 
             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
             loading="lazy"

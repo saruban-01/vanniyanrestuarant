@@ -1,7 +1,7 @@
 <div>
     <!-- Menu Hero -->
     <section class="relative h-[35vh] md:h-[45vh] bg-vanniyan-green-900 flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-40"></div>
+        <div class="absolute inset-0 bg-[url('{{ asset('images/menu-hero.jpg') }}')] bg-cover bg-center opacity-40"></div>
         <div class="absolute inset-0 bg-vanniyan-green-900/50 backdrop-blur-sm"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-vanniyan-green-900 via-vanniyan-green-900/60 to-vanniyan-green-900/30"></div>
         <div class="relative z-10 text-center px-6">
@@ -85,7 +85,9 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     @foreach($categories as $cat)
                         @php
-                            $coverImage = $cat->items->first()?->image_url ?? 'https://via.placeholder.com/800x500?text=Vanniyan';
+                            $coverImage = $cat->items->first()?->image_url
+                                ? str_replace(['w=800', 'q=80'], ['w=400', 'q=70'], $cat->items->first()->image_url)
+                                : asset('images/placeholder.svg');
                         @endphp
                         <div wire:key="cat-{{ $cat->id }}" class="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-vanniyan-gold/30 transition-all duration-500 hover:-translate-y-1.5 flex flex-col">
                             <div class="relative h-52 overflow-hidden bg-gray-100">

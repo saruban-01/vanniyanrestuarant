@@ -38,7 +38,7 @@
                 @forelse($items as $item)
                 <div wire:key="cat-item-{{ $item->id }}" class="flex gap-4 p-4 bg-white border border-gray-100 rounded-2xl hover:border-vanniyan-gold/30 hover:shadow-lg transition-all duration-300">
                     <div class="w-24 h-24 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                        <img src="{{ $item->image_url ?: 'https://via.placeholder.com/200x200?text=Vanniyan' }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
+                        <img src="{{ $item->image_url ? str_replace(['w=800', 'q=80'], ['w=400', 'q=70'], $item->image_url) : asset('images/placeholder.svg') }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-1 min-w-0 flex flex-col">
                         <h3 class="font-poppins font-bold text-vanniyan-green-900 text-lg">{{ $item->name }}</h3>
