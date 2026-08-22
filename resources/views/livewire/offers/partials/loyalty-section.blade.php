@@ -19,10 +19,10 @@
             <!-- Physical Card Image -->
             <div class="w-full lg:w-1/2 flex flex-col justify-center gap-6">
                 <div class="relative w-full max-w-md mx-auto aspect-[1050/600] rounded-2xl overflow-hidden shadow-2xl">
-                    <img src="{{ asset('images/cards/loyalty-front.png') }}" alt="Vanniyan Loyalty Card — front" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/cards/loyalty-front.jpg') }}" alt="Vanniyan Loyalty Card — front" class="w-full h-full object-cover">
                 </div>
                 <div class="relative w-full max-w-md mx-auto aspect-[1050/600] rounded-2xl overflow-hidden shadow-2xl">
-                    <img src="{{ asset('images/cards/loyalty-back.png') }}" alt="Vanniyan Loyalty Card — back" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/cards/loyalty-back.jpg') }}" alt="Vanniyan Loyalty Card — back" class="w-full h-full object-cover">
                 </div>
             </div>
 
