@@ -19,6 +19,16 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/vendor
+/bootstrap/cache/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/logs/*
+/storage/app/public/*
+/error_log
+/public/error_log
 _ide_helper.php
 Homestead.json
 Homestead.yaml
