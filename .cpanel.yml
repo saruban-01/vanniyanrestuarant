@@ -7,21 +7,37 @@ deployment:
 
     - export REPOPATH=/home/lightupl/repositories/vanniyanrestuarant
     - export DEPLOYPATH=/home/lightupl/public_html
-    - export PHP=/usr/local/bin/php
-    - export COMPOSER=/usr/local/bin/composer
+    - export PHP=/opt/cpanel/ea-php84/root/usr/bin/php
+    - export COMPOSER=/home/lightupl/bin/composer
 
-    # 1. Install PHP dependencies.
-    #    vendor/ is gitignored, so it MUST be built on the server.
-    - cd $REPOPATH && $COMPOSER install --no-dev --prefer-dist --optimize-autoloader || (cd $REPOPATH && composer install --no-dev --prefer-dist --optimize-autoloader)
+    # 1. Install PHP dependencies (vendor/ is gitignored).
+    - cd $REPOPATH && $PHP -d allow_url_fopen=On -d memory_limit=-1 $COMPOSER install --no-dev --prefer-dist --optimize-autoloader
 
-    # 2. Production optimizations (safe even if .env is not present yet).
+    # 2. Ensure required storage directories exist.
+    - cd $REPOPATH && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/framework/testing storage/app/public storage/logs
+
+    # 3. Create .env if missing (never overwrite an existing one).
+    - cd $REPOPATH && [ -f .env ] || cp .env.example .env
+
+    # 4. App key (only if not already set) + database migrations.
+    - cd $REPOPATH && grep -q '^APP_KEY=.' .env || $PHP artisan key:generate
+    - cd $REPOPATH && $PHP artisan migrate --force
+
+    # 5. Production caches.
     - cd $REPOPATH && $PHP artisan config:cache || true
     - cd $REPOPATH && $PHP artisan route:cache || true
 
-    # 3. Point the web root at Laravel's public/ folder.
-    #    The rest of the repo stays OUTSIDE public_html (not web-accessible).
+    # 6. Point the web root at Laravel's public/ folder (rest of app stays outside public_html).
     - /bin/rm -rf $DEPLOYPATH
     - /bin/ln -s $REPOPATH/public $DEPLOYPATH
 
-    # 4. Link storage (public/storage -> storage/app/public).
+    # 7. Link storage.
     - cd $REPOPATH && $PHP artisan storage:link || true
+
+    # 8. Permissions: PHP runs as the cPanel user, so keep code owner-only
+    #    and only open public/ (and ancestor traversal) to the web server.
+    - /bin/chmod 711 /home/lightupl/repositories
+    - /bin/chmod 711 $REPOPATH
+    - /bin/chmod -R 755 $REPOPATH/public
+    - /bin/chmod -R 700 $REPOPATH/storage $REPOPATH/bootstrap/cache
+    - /bin/chmod 600 $REPOPATH/.env
