@@ -54,7 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'canonical_host' => env('APP_CANONICAL_HOST', 'vanniyanrestuarant.vercel.app'),
+    'canonical_host' => env('APP_CANONICAL_HOST', 'lightuplanka.org'),
 
     /*
     |--------------------------------------------------------------------------

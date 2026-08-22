@@ -27,6 +27,7 @@
 /storage/framework/testing/*
 /storage/logs/*
 /storage/app/public/*
+/database/*.sqlite
 /error_log
 /public/error_log
 _ide_helper.php

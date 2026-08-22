@@ -20,8 +20,8 @@ class RedirectMiddleware
             $path = '/';
         }
 
-        $canonical = config('app.canonical_host', 'vanniyanrestuarant.vercel.app');
-        $allowed = ['vanniyanrestuarant.vercel.app', $canonical];
+        $canonical = config('app.canonical_host', 'lightuplanka.org');
+        $allowed = [$canonical];
 
         $isLocal = in_array($request->getHost(), ['localhost', '127.0.0.1', '::1'], true);
 
